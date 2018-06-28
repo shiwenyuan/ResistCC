@@ -29,11 +29,17 @@
 并非自身攻击，而是利用伪装ip，让其他主机误认为目标机在向其发送ICMP请求，结果：目标主机需要对所有请求进行ICMP应答发送 
 ```
 
+## 攻击方式分析
+```$xslt
+应该是每天都会重启一次攻击脚本，当天的攻击ip拉黑后就不会再次攻击，只有到了第二天重启之后会换ip再次攻击 此时他应当`伪装IP攻击`或者`反射攻击`
+```
+
 ## 抵御办法
 
 ```$xslt
 分析nginx的log，通过log查询出来有问题的ip然后通过ipset去做一个黑名单的配置管理
 ```
+
 
 ```$xslt
 目前是做了一个基于分钟的，通过blacklist.conf去配置执行间隔,然后通过crontab 去执行。具体参数见blacklist.conf
@@ -41,7 +47,7 @@
 
 ## nginxlog的格式
 ```$xslt
-121.41.112.148 56888563 - 0.002 0.002 [28/Jun/2018:10:12:00 +0800] "iz25ndyf9bxz" "HEAD / HTTP/1.1" 302 0 mod_gzip: -pct "-" "-" "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)" ssl:"" server_port:"7080" scripts:/mnt/www/lvshi_xmanlegal_com/
+121.41.112.148 56888563 - 0.002 0.002 [28/Jun/2018:10:12:00 +0800] "iz25ndyf9bxz" "HEAD / HTTP/1.1" 302 0 mod_gzip: -pct "-" "-" "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)" ssl:"" server_port:"7080" scripts:/
 ```
 如果格式不一样可以去改一下nginx access.log 配置
 ```$xslt
